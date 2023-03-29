@@ -30,7 +30,9 @@ function SingleMessage() {
   });
 
   useEffect(() => {
-    router.push("/login");
+    if (!user) {
+      router.push("/login");
+    }
     refetch();
   }, [user]);
   const form = useForm({

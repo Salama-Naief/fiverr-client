@@ -160,14 +160,7 @@ function Navbar() {
                         )}
                       </div>
                     ))}
-                    <Menu.Item>
-                      <button
-                        className="text-gray-500 text-md"
-                        onClick={handlelogout}
-                      >
-                        Logout
-                      </button>
-                    </Menu.Item>
+                    <Menu.Item onClick={handlelogout}>Logout</Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
               ) : (

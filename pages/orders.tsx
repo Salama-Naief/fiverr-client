@@ -66,7 +66,9 @@ function Orders() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    router.push("/login");
+    if (!user) {
+      router.push("/login");
+    }
   }, []);
   useEffect(() => {
     axiosUrl
