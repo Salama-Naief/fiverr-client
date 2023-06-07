@@ -41,18 +41,6 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
   const [activeTab, setActiveTab] = useState<string>("Basic");
   const [allowToReview, setAllowToReview] = useState<boolean>(false);
 
-  //get bib seller
-  const {
-    isLoading,
-    error,
-    data: user,
-  } = useQuery({
-    queryKey: ["SellerUser"],
-    queryFn: () =>
-      axiosUrl.get(`/users/user/${gig.userId}`).then((res) => {
-        return res.data;
-      }),
-  });
   //get gig reviews
   const {
     isLoading: reviewsLoading,
@@ -163,30 +151,24 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
             <Title my="md" order={1}>
               {gig.title}
             </Title>
-            {!error && isLoading ? (
-              <Flex mt={"xl"} align="center" gap={"sm"} px="md">
-                <Skeleton height={40} circle />
-                <Skeleton height={12} radius="lg" />
-              </Flex>
-            ) : (
-              <Flex align={"center"} gap="sm">
-                {user?.image && (
-                  <div className="relative w-10 h-10 rounded-full overflow-clip">
-                    <Image src={user?.image} fill loading="lazy" alt="" />
-                  </div>
-                )}
 
-                <Text fw="bold" tt={"capitalize"}>
-                  {user?.username}
-                </Text>
-                <Group position="center">
-                  <Rating value={gig.averageRating} fractions={2} readOnly />
-                  <span className="text-yellow-500">{gig.averageRating}</span>
-                  <span className="text-gray-500">({gig.numOfReviews})</span>
-                  <span className="text-gray-500">selles({gig.sales})</span>
-                </Group>
-              </Flex>
-            )}
+            <Flex align={"center"} gap="sm">
+              {gig.user?.image && (
+                <div className="relative w-10 h-10 rounded-full overflow-clip">
+                  <Image src={gig.user?.image} fill loading="lazy" alt="" />
+                </div>
+              )}
+
+              <Text fw="bold" tt={"capitalize"}>
+                {gig.user?.username}
+              </Text>
+              <Group position="center">
+                <Rating value={gig.averageRating} fractions={2} readOnly />
+                <span className="text-yellow-500">{gig.averageRating}</span>
+                <span className="text-gray-500">({gig.numOfReviews})</span>
+                <span className="text-gray-500">selles({gig.sales})</span>
+              </Group>
+            </Flex>
 
             {/**Slider */}
             <Slider images={gig.images.concat(gig.coverImage)} />
@@ -199,41 +181,33 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
             <Title order={3} my="xl">
               About the Seller
             </Title>
-            {!error && isLoading ? (
-              <Flex mt={"xl"} align="center" gap={"sm"} px="md">
-                <Skeleton height={100} circle />
-                <div className="w-full">
-                  <Skeleton height={15} radius="lg" my={"md"} />
-                  <Skeleton height={15} radius="lg" />
-                </div>
-              </Flex>
-            ) : (
-              <Flex align={"center"} gap="xl" my={"xl"}>
-                <div className="relative w-32 h-32 rounded-full overflow-clip">
-                  <Image src={user?.image} fill loading="lazy" alt="" />
-                </div>
 
-                <div>
-                  <Text tt={"capitalize"} fw="bold" fz={"lg"}>
-                    {user?.username}
-                  </Text>
-                  <Text tt={"capitalize"} color="gray.6">
-                    {user?.story}
-                  </Text>
-                  <Group position="center" my="sm">
-                    <Rating value={3.5} fractions={2} readOnly />
-                    <span className="text-yellow-500">3.5</span>
-                    <span className="bg-white text-gray-500">(120)</span>
-                  </Group>
-                  <button
-                    onClick={handleConv}
-                    className="border border-gray-500 text-gray-500 px-4 py-2 font-bold rounded hover:bg-gray-500 hover:text-white transition duration-150 ease-in-out "
-                  >
-                    Contact Me
-                  </button>
-                </div>
-              </Flex>
-            )}
+            <Flex align={"center"} gap="xl" my={"xl"}>
+              <div className="relative w-32 h-32 rounded-full overflow-clip">
+                <Image src={gig.user?.image} fill loading="lazy" alt="" />
+              </div>
+
+              <div>
+                <Text tt={"capitalize"} fw="bold" fz={"lg"}>
+                  {gig.user?.username}
+                </Text>
+                <Text tt={"capitalize"} color="gray.6">
+                  {gig.user?.story}
+                </Text>
+                <Group position="center" my="sm">
+                  <Rating value={3.5} fractions={2} readOnly />
+                  <span className="text-yellow-500">3.5</span>
+                  <span className="bg-white text-gray-500">(120)</span>
+                </Group>
+                <button
+                  onClick={handleConv}
+                  className="border border-gray-500 text-gray-500 px-4 py-2 font-bold rounded hover:bg-gray-500 hover:text-white transition duration-150 ease-in-out "
+                >
+                  Contact Me
+                </button>
+              </div>
+            </Flex>
+
             <Paper className="border" p={"xl"}>
               <Grid>
                 <Grid.Col span={6}>
@@ -242,7 +216,7 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
                       from
                     </Text>
                     <Text fw={600} color="gray.8">
-                      {user?.country}
+                      {gig.user?.country}
                     </Text>
                   </div>
                   <div className="my-3 px-6">
@@ -256,7 +230,7 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
                   <Text fw={600} color="gray.6" px={"md"}>
                     Languages
                   </Text>
-                  {user?.languages.map((lang) => (
+                  {gig.user?.languages.map((lang) => (
                     <div
                       key={lang._id}
                       className="my-1 flex items-center gap-x-2 px-6"
@@ -273,7 +247,7 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
                     <Text fw={600} color="gray.6">
                       Member since
                     </Text>
-                    <Moment format="YYYY/MM">{user?.createdAt}</Moment>
+                    <Moment format="YYYY/MM">{gig.user?.createdAt}</Moment>
                   </div>
 
                   <FromDataItem frist={"Last delivery"} second="1 day" />
@@ -281,7 +255,7 @@ function Gig(props: { gig: GigsProps; errMsg: string }) {
               </Grid>
               <Divider size={"sm"} my="md" />
               <Text tt={"capitalize"} fz={"lg"} color="gray.6">
-                {user?.desc}
+                {gig.user?.desc}
               </Text>
             </Paper>
 

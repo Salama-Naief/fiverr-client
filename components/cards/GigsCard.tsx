@@ -17,18 +17,6 @@ import { useQuery } from "react-query";
 import Star from "../../public/img/star.png";
 import { axiosUrl } from "../../utils/connection";
 function GigsCard({ card }: { card: GigsProps }) {
-  const {
-    isLoading,
-    error,
-    data: user,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: () =>
-      axiosUrl.get(`/users/user/${card.userId}`).then((res) => {
-        return res.data;
-      }),
-  });
-
   return (
     <div className="h-full flex flex-col rounded-lg overflow-hidden border shadow-md">
       <div className="flex-1">
@@ -37,23 +25,18 @@ function GigsCard({ card }: { card: GigsProps }) {
             <Image src={card.coverImage} fill alt="Norway" />
           </div>
         </Link>
-        {isLoading ? (
-          <Flex mt={"xl"} align="center" gap={"sm"} px="md">
-            <Skeleton height={40} circle />
-            <Skeleton height={12} radius="lg" />
-          </Flex>
-        ) : (
-          <Flex gap={"sm"} mt="xl" px="md" align={"center"}>
-            {user?.image && (
-              <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                <Image src={user?.image} fill loading="lazy" alt="" />
-              </div>
-            )}
-            <Title tt={"capitalize"} order={6}>
-              {user?.username}
-            </Title>
-          </Flex>
-        )}
+
+        <Flex gap={"sm"} mt="xl" px="md" align={"center"}>
+          {card.user?.image && (
+            <div className="relative w-10 h-10 rounded-full overflow-hidden">
+              <Image src={card.user?.image} fill loading="lazy" alt="" />
+            </div>
+          )}
+          <Title tt={"capitalize"} order={6}>
+            {card.user?.username}
+          </Title>
+        </Flex>
+
         <Link href={`/gig/${card._id}`}>
           <Text
             my={"sm"}

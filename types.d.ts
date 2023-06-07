@@ -62,6 +62,34 @@ interface GigsProps {
   updatedAt: Date;
   userId: string;
   _id: string;
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
+    image: string;
+    isSeller: true;
+    createdAt: Date;
+    updatedAt: Date;
+
+    desc: string;
+    languages: [
+      {
+        languge: string;
+        level: string;
+        _id: string;
+      },
+      {
+        languge: string;
+        level: string;
+        _id: string;
+      }
+    ];
+    story: string;
+    country: string;
+    registerType: string;
+    providerId: "";
+  };
 }
 
 interface MoreDetailsProps {
@@ -76,6 +104,34 @@ interface ReviewProps {
   gigId: string;
   userId: string;
   createdAt: Date;
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
+    image: string;
+    isSeller: true;
+    createdAt: Date;
+    updatedAt: Date;
+
+    desc: string;
+    languages: [
+      {
+        languge: string;
+        level: string;
+        _id: string;
+      },
+      {
+        languge: string;
+        level: string;
+        _id: string;
+      }
+    ];
+    story: string;
+    country: string;
+    registerType: string;
+    providerId: "";
+  };
 }
 
 interface MyGigsProps {
